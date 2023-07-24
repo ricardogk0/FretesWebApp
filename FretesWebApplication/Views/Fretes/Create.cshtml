@@ -1,0 +1,51 @@
+﻿@model FretesWebApplication.Models.Frete
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Frete</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Distancia" class="control-label"></label>
+                <input asp-for="Distancia" class="form-control" />
+                <span asp-validation-for="Distancia" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdVeiculo">Veículo:</label>
+                <select asp-for="IdVeiculo" class="form-control" asp-items="ViewBag.IdVeiculo"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Produto" class="control-label"></label>
+                <select asp-for="IdProduto" class="form-control" asp-items="ViewBag.IdProduto"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Taxa" class="control-label"></label>
+                <input asp-for="Taxa" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="ValorTotal" class="control-label"></label>
+                <input asp-for="ValorTotal" class="form-control" readonly />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
