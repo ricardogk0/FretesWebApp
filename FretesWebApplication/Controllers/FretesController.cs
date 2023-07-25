@@ -79,7 +79,7 @@ namespace FretesWebApplication.Controllers
                 }
             }
 
-            ViewData["IdProduto"] = new SelectList(_context.Produto, "IdProduto", "PesoProduto", frete.IdProduto);
+             ViewData["IdProduto"] = new SelectList(_context.Produto, "IdProduto", "PesoProduto", frete.IdProduto);
              ViewData["IdVeiculo"] = new SelectList(_context.Veiculo, "IdVeiculo", "PesoVeiculo", frete.IdVeiculo);
              return View(frete);
          }
@@ -97,8 +97,8 @@ namespace FretesWebApplication.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdProduto"] = new SelectList(_context.Produto, "IdProduto", "IdProduto", frete.IdProduto);
-            ViewData["IdVeiculo"] = new SelectList(_context.Veiculo, "IdVeiculo", "IdVeiculo", frete.IdVeiculo);
+            ViewData["IdProduto"] = new SelectList(_context.Produto, "IdProduto", "Denominacao", frete.IdProduto);
+            ViewData["IdVeiculo"] = new SelectList(_context.Veiculo, "IdVeiculo", "Denominacao", frete.IdVeiculo);
             return View(frete);
         }
 
