@@ -28,12 +28,13 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "calcularfrete", // Nome da rota
-    pattern: "Fretes/CalcularFrete/{idFrete}", // Padrão da URL
-    defaults: new { controller = "Fretes", action = "CalcularFrete" });
-
-app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "create-frete",
+    pattern: "Fretes/Create",
+    defaults: new { controller = "Fretes", action = "Create" });
+
 
 app.Run();

@@ -18,12 +18,12 @@ namespace FretesWebApplication.Models
         [ForeignKey("Veiculo")]
         [Column("id_veiculo")]
         public int IdVeiculo { get; set; }
-        public Veiculo Veiculo { get; set; }
+        public Veiculo? Veiculo { get; set; }
 
         [ForeignKey("Produto")]
         [Column("id_produto")]
         public int IdProduto { get; set; }
-        public Produto Produto { get; set; }
+        public Produto? Produto { get; set; }
 
         [ReadOnly(true)]
         public double Taxa { get; set; }

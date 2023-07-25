@@ -59,20 +59,30 @@ namespace FretesWebApplication.Controllers
         // POST: Fretes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdFrete,Distancia,IdVeiculo,IdProduto,Taxa,ValorTotal")] Frete frete)
-        {
-            if (ModelState.IsValid)
+         [HttpPost]
+         [ValidateAntiForgeryToken]
+         public async Task<IActionResult> Create([Bind("IdFrete,Distancia,IdVeiculo,IdProduto,Taxa,ValorTotal")] Frete frete)
+         {
+             if (ModelState.IsValid)
+             {
+                 _context.Add(frete);
+                 await _context.SaveChangesAsync();
+                 return RedirectToAction(nameof(Index));
+             }
+
+            foreach (var key in ModelState.Keys)
             {
-                _context.Add(frete);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var errors = ModelState[key].Errors;
+                foreach (var error in errors)
+                {
+                    Console.WriteLine($"Erro na propriedade '{key}': {error.ErrorMessage}");
+                }
             }
+
             ViewData["IdProduto"] = new SelectList(_context.Produto, "IdProduto", "PesoProduto", frete.IdProduto);
-            ViewData["IdVeiculo"] = new SelectList(_context.Veiculo, "IdVeiculo", "PesoVeiculo", frete.IdVeiculo);
-            return View(frete);
-        }
+             ViewData["IdVeiculo"] = new SelectList(_context.Veiculo, "IdVeiculo", "PesoVeiculo", frete.IdVeiculo);
+             return View(frete);
+         }
 
         // GET: Fretes/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -163,7 +173,7 @@ namespace FretesWebApplication.Controllers
             {
                 _context.Frete.Remove(frete);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -204,7 +214,7 @@ namespace FretesWebApplication.Controllers
 
         private bool FreteExists(int id)
         {
-          return (_context.Frete?.Any(e => e.IdFrete == id)).GetValueOrDefault();
+            return (_context.Frete?.Any(e => e.IdFrete == id)).GetValueOrDefault();
         }
     }
 }
