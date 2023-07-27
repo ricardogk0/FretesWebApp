@@ -2,6 +2,7 @@
 using FretesWebApplication.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FretesWebApplication.Migrations
 {
     [DbContext(typeof(FretesWebApplicationContext))]
-    partial class FretesWebApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20230725013231_Initial9")]
+    partial class Initial9
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,11 +95,6 @@ namespace FretesWebApplication.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("nome");
-
-                    b.Property<string>("Salt")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("salt");
 
                     b.Property<string>("Senha")
                         .IsRequired()

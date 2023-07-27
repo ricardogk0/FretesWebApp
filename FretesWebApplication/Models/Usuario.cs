@@ -12,6 +12,12 @@ namespace FretesWebApplication.Models
         [Column("nome")]
         public string Nome { get; set; }
 
+        [Column("senha")]
+        public string Senha { get; set; }
+
+        [Column("salt")]
+        public string? Salt { get; set; }
+
         [Column("tipo_usuario")]
         [Display(Name = "Tipo de Usuário")]
         public int TipoUsuario { get; set; }

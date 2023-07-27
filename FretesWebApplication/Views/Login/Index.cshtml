@@ -1,0 +1,80 @@
+﻿@model Usuario
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Login</h1>
+
+<form asp-controller="Login" id="loginForm" asp-action="Login" method="post">
+    <div class="form-group">
+        <label asp-for="Nome">Username:</label>
+        <input asp-for="Nome" type="text" name="Nome" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Senha">Password:</label>
+        <input asp-for="Senha" type="password" name="Senha" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+</form>
+
+<div id="message" style="display: none;"></div>
+
+@section Scripts {
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            var formData = {
+                Nome: document.getElementById("Nome").value,
+                Senha: document.getElementById("Senha").value
+            };
+
+            fetch("/Login/Login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Erro ao fazer login.");
+                }
+                // Verificar se a resposta tem conteúdo antes de tentar analisá-la como JSON
+                return response.text().then(text => text ? JSON.parse(text) : {});
+            })
+            .then(data => {
+                // Criar o elemento "message" se ele ainda não existe
+                var messageElement = document.getElementById("message");
+                if (!messageElement) {
+                    messageElement = document.createElement("div");
+                    messageElement.id = "message";
+                    document.body.appendChild(messageElement);
+                }
+
+                // Exibir mensagem de sucesso e redirecionar para outra página
+                messageElement.innerText = "Login bem-sucedido! Redirecionando...";
+                messageElement.style.display = "block";
+
+                // Redirecionar após 2 segundos para outra página (por exemplo, a página de perfil do usuário)
+                setTimeout(function () {
+                    window.location.href = "/Home/Index";
+                }, 2000);
+            })
+            .catch(error => {
+                // Criar o elemento "message" se ele ainda não existe
+                var messageElement = document.getElementById("message");
+                if (!messageElement) {
+                    messageElement = document.createElement("div");
+                    messageElement.id = "message";
+                    document.body.appendChild(messageElement);
+                }
+
+                // Exibir mensagem de erro para o usuário
+                messageElement.innerText = "Erro ao fazer login: " + error.message;
+                messageElement.style.display = "block";
+            });
+        });
+    </script>
+}

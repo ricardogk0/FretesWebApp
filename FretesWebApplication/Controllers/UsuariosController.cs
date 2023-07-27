@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FretesWebApplication.Data;
 using FretesWebApplication.Models;
+using BCrypt.Net;
 
 namespace FretesWebApplication.Controllers
 {
@@ -56,15 +57,34 @@ namespace FretesWebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdUsuario,Name,TipoUsuario")] Usuario usuario)
+        public async Task<IActionResult> Create([Bind("IdUsuario,Nome,Senha,TipoUsuario")] Usuario usuario)
         {
             if (ModelState.IsValid)
             {
+                string salt = BCrypt.Net.BCrypt.GenerateSalt();
+                string hashedPassword = BCrypt.Net.BCrypt.HashPassword(usuario.Senha, salt);
+                usuario.Salt = salt;
+                usuario.Senha = hashedPassword;
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(usuario);
+            else
+            {
+                // Se o ModelState não for válido, identifique os erros de validação
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+
+                foreach (var error in errors)
+                {
+                    // Aqui, você pode exibir ou registrar os detalhes de cada erro de validação
+                    // Por exemplo:
+                    Console.WriteLine(error.ErrorMessage); // Exibe a mensagem de erro
+                    Console.WriteLine(error.Exception);     // Exibe a exceção relacionada, se houver
+                }
+
+                // Se preferir, você pode retornar a View novamente com os erros para exibi-los ao usuário
+                return View(usuario);
+            }
         }
 
         // GET: Usuarios/Edit/5
